@@ -1,0 +1,224 @@
+// Original
+
+
+
+;; Function main (null)
+;; enabled by -tree-original
+
+
+{
+  int a = 10;
+  int b = 1;
+  int c = 2;
+  int d = 30;
+  int sum = 0;
+
+    int a = 10;
+    int b = 1;
+    int c = 2;
+    int d = 30;
+    int sum = 0;
+  goto <D.2416>;
+  <D.2417>:;
+  c = c + d;
+  sum = sum + a;
+  a-- ;
+  <D.2416>:;
+  if (a > b) goto <D.2417>; else goto <D.2415>;
+  <D.2415>:;
+  printf ((const char * restrict) "Sum: %d\n", sum);
+  return 0;
+}
+return 0;
+
+
+// Gimple
+
+
+int main ()
+{
+  int D.2419;
+
+  {
+    int a;
+    int b;
+    int c;
+    int d;
+    int sum;
+
+    a = 10;
+    b = 1;
+    c = 2;
+    d = 30;
+    sum = 0;
+    goto <D.2416>;
+    <D.2417>:
+    c = c + d;
+    sum = sum + a;
+    a = a + -1;
+    <D.2416>:
+    if (a > b) goto <D.2417>; else goto <D.2415>;
+    <D.2415>:
+    printf ("Sum: %d\n", sum);
+    D.2419 = 0;
+    return D.2419;
+  }
+  D.2419 = 0;
+  return D.2419;
+}
+
+
+
+
+// Optimized
+
+
+
+;; Function main (main, funcdef_no=0, decl_uid=2408, cgraph_uid=1, symbol_order=0)
+
+int main ()
+{
+  int sum;
+  int d;
+  int c;
+  int b;
+  int a;
+  int D.2419;
+  int _11;
+
+  <bb 2> :
+  a_4 = 10;
+  b_5 = 1;
+  c_6 = 2;
+  d_7 = 30;
+  sum_8 = 0;
+  goto <bb 4>; [INV]
+
+  <bb 3> :
+  c_12 = c_2 + d_7;
+  sum_13 = sum_3 + a_1;
+  a_14 = a_1 + -1;
+
+  <bb 4> :
+  # a_1 = PHI <a_4(2), a_14(3)>
+  # c_2 = PHI <c_6(2), c_12(3)>
+  # sum_3 = PHI <sum_8(2), sum_13(3)>
+  if (a_1 > b_5)
+    goto <bb 3>; [INV]
+  else
+    goto <bb 5>; [INV]
+
+  <bb 5> :
+  printf ("Sum: %d\n", sum_3);
+  _11 = 0;
+
+  <bb 6> :
+<L3>:
+  return _11;
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+;; Function main (null)
+;; enabled by -tree-original
+
+
+{
+  int a = 10;
+  int b = 1;
+  int c = 2;
+  int d = 30;
+  int sum = 0;
+
+    int a = 10;
+    int b = 1;
+    int c = 2;
+    int d = 30;
+    int sum = 0;
+  <D.2417>:;
+  a = c + d;
+  sum = sum + a;
+  a = a + -2;
+  if (a > b) goto <D.2417>; else goto <D.2415>;
+  <D.2415>:;
+  printf ((const char * restrict) "Sum: %d\n", sum);
+}
+return 0;
+
+
+// Gimple
+
+
+int main ()
+{
+  int D.2419;
+
+  {
+    int a;
+    int b;
+    int c;
+    int d;
+    int sum;
+
+    a = 10;
+    b = 1;
+    c = 2;
+    d = 30;
+    sum = 0;
+    <D.2417>:
+    a = c + d;
+    sum = sum + a;
+    a = a + -2;
+    if (a > b) goto <D.2417>; else goto <D.2415>;
+    <D.2415>:
+    printf ("Sum: %d\n", sum);
+  }
+  D.2419 = 0;
+  return D.2419;
+}
+
+
+// Optimized
+
+
+
+;; Function main (main, funcdef_no=0, decl_uid=2408, cgraph_uid=1, symbol_order=0)
+
+int main ()
+{
+  int sum;
+  int d;
+  int c;
+  int b;
+  int a;
+  int D.2419;
+  int _12;
+
+  <bb 2> :
+  a_2 = 10;
+  b_3 = 1;
+  c_4 = 2;
+  d_5 = 30;
+  sum_6 = 0;
+
+  <bb 3> :
+  # sum_1 = PHI <sum_6(2), sum_8(3)>
+  a_7 = c_4 + d_5;
+  sum_8 = sum_1 + a_7;
+  a_9 = a_7 + -2;
+  if (a_9 > b_3)
+    goto <bb 3>; [INV]
+  else
+    goto <bb 4>; [INV]
+
+  <bb 4> :
+  printf ("Sum: %d\n", sum_8);
+  _12 = 0;
+
+  <bb 5> :
+<L2>:
+  return _12;
+
+}

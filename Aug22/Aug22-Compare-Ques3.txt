@@ -1,0 +1,150 @@
+// Original
+
+
+
+;; Function main (null)
+;; enabled by -tree-original
+
+
+{
+  int val;
+  int res;
+
+    int val;
+    int res;
+  scanf ((const char * restrict) "%d", &val);
+  switch (val)
+    {
+      case 4:;
+      res = 4;
+      goto <D.2418>;
+      case 2:;
+      res = 10;
+      goto <D.2418>;
+      case 1:;
+      res = 1;
+      goto <D.2418>;
+      case 3:;
+      res = 3;
+      goto <D.2418>;
+      case 5:;
+      res = 5;
+      goto <D.2418>;
+      default:;
+      res = 100;
+      goto <D.2418>;
+      <D.2418>:;
+    }
+  printf ((const char * restrict) "%d\n", res);
+  return 0;
+}
+return 0;
+
+
+// Gimple
+
+
+int main ()
+{
+  int D.2420;
+
+  {
+    int val;
+    int res;
+
+    try
+      {
+        scanf ("%d", &val);
+        val.0_1 = val;
+        switch (val.0_1) <default: <D.2417>, case 1: <D.2414>, case 2: <D.2413>, case 3: <D.2415>, case 4: <D.2412>, case 5: <D.2416>>
+        <D.2412>:
+        res = 4;
+        goto <D.2418>;
+        <D.2413>:
+        res = 10;
+        goto <D.2418>;
+        <D.2414>:
+        res = 1;
+        goto <D.2418>;
+        <D.2415>:
+        res = 3;
+        goto <D.2418>;
+        <D.2416>:
+        res = 5;
+        goto <D.2418>;
+        <D.2417>:
+        res = 100;
+        goto <D.2418>;
+        <D.2418>:
+        printf ("%d\n", res);
+        D.2420 = 0;
+        return D.2420;
+      }
+    finally
+      {
+        val = {CLOBBER};
+      }
+  }
+  D.2420 = 0;
+  return D.2420;
+}
+
+
+// Optimized
+
+
+
+;; Function main (main, funcdef_no=0, decl_uid=2408, cgraph_uid=1, symbol_order=0)
+
+int main ()
+{
+  int res;
+  int val;
+  int D.2420;
+  int val.0_1;
+  int _12;
+
+  <bb 2> :
+  scanf ("%d", &val);
+  val.0_1 = val;
+  switch (val.0_1) <default: <L5> [0.00%], case 1: <L2> [20.00%], case 2: <L1> [20.00%], case 3: <L3> [20.00%], case 4: <L0> [20.00%], case 5: <L4> [20.00%]>
+
+  <bb 3> :
+<L0>:
+  res_6 = 4;
+  goto <bb 9>; [INV]
+
+  <bb 4> :
+<L1>:
+  res_8 = 10;
+  goto <bb 9>; [INV]
+
+  <bb 5> :
+<L2>:
+  res_9 = 1;
+  goto <bb 9>; [INV]
+
+  <bb 6> :
+<L3>:
+  res_7 = 3;
+  goto <bb 9>; [INV]
+
+  <bb 7> :
+<L4>:
+  res_5 = 5;
+  goto <bb 9>; [INV]
+  <bb 8> :
+<L5>:
+  res_10 = 100;
+
+  <bb 9> :
+  # res_2 = PHI <res_6(3), res_8(4), res_9(5), res_7(6), res_5(7), res_10(8)>
+  printf ("%d\n", res_2);
+  _12 = 0;
+  val ={v} {CLOBBER};
+
+  <bb 10> :
+<L8>:
+  return _12;
+
+}

@@ -1,0 +1,253 @@
+// Original
+
+
+
+;; Function main (null)
+;; enabled by -tree-original
+
+
+{
+  int a = 10;
+  int b = 1;
+  int sum = 0;
+
+    int a = 10;
+    int b = 1;
+    int sum = 0;
+  if (a > b)
+    {
+      sum = sum + a;
+    }
+  else
+    {
+      sum = sum = sum + b;
+    }
+  printf ((const char * restrict) "Sum: %d\n", sum);
+}
+return 0;
+
+// Gimple
+
+
+int main ()
+{
+  int D.2417;
+
+  {
+    int a;
+    int b;
+    int sum;
+
+    a = 10;
+    b = 1;
+    sum = 0;
+    if (a > b) goto <D.2414>; else goto <D.2415>;
+    <D.2414>:
+    sum = sum + a;
+    goto <D.2416>;
+    <D.2415>:
+    sum = sum + b;
+    sum = sum;
+    <D.2416>:
+    printf ("Sum: %d\n", sum);
+  }
+  D.2417 = 0;
+  return D.2417;
+}
+
+// Optimized
+
+
+;; Function main (main, funcdef_no=0, decl_uid=2408, cgraph_uid=1, symbol_order=0)
+
+int main ()
+{
+  int sum;
+  int b;
+  int a;
+  int D.2417;
+  int _10;
+
+  <bb 2> :
+  a_2 = 10;
+  b_3 = 1;
+  sum_4 = 0;
+  if (a_2 > b_3)
+    goto <bb 3>; [INV]
+  else
+    goto <bb 4>; [INV]
+
+  <bb 3> :
+  sum_7 = sum_4 + a_2;
+  goto <bb 5>; [INV]
+
+  <bb 4> :
+  sum_5 = sum_4 + b_3;
+  sum_6 = sum_5;
+
+  <bb 5> :
+  # sum_1 = PHI <sum_7(3), sum_6(4)>
+  printf ("Sum: %d\n", sum_1);
+  _10 = 0;
+
+  <bb 6> :
+<L3>:
+  return _10;
+
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////
+
+// Original
+
+
+
+;; Function main (null)
+;; enabled by -tree-original
+
+
+{
+  int a = -10;
+  int b = -1;
+  int c = -3;
+  int max;
+
+    int a = -10;
+    int b = -1;
+    int c = -3;
+    int max;
+  if (a > b)
+    {
+      if (a > c)
+        {
+          max = a;
+        }
+      else
+        {
+          max = c;
+        }
+    }
+  else
+    {
+      if (b > c)
+        {
+          max = b;
+        }
+      else
+        {
+          max = c;
+        }
+    }
+  printf ((const char * restrict) "Max: %d\n", max);
+  return 0;
+}
+return 0;
+
+
+// Gimple
+
+
+int main ()
+{
+  int D.2424;
+
+  {
+    int a;
+    int b;
+    int c;
+    int max;
+
+    a = -10;
+    b = -1;
+    c = -3;
+    if (a > b) goto <D.2415>; else goto <D.2416>;
+    <D.2415>:
+    if (a > c) goto <D.2417>; else goto <D.2418>;
+    <D.2417>:
+    max = a;
+    goto <D.2419>;
+    <D.2418>:
+    max = c;
+    <D.2419>:
+    goto <D.2420>;
+    <D.2416>:
+    if (b > c) goto <D.2421>; else goto <D.2422>;
+    <D.2421>:
+    max = b;
+    goto <D.2423>;
+    <D.2422>:
+    max = c;
+    <D.2423>:
+    <D.2420>:
+    printf ("Max: %d\n", max);
+    D.2424 = 0;
+    return D.2424;
+  }
+  D.2424 = 0;
+  return D.2424;
+}
+
+
+// Optimized
+
+
+
+;; Function main (main, funcdef_no=0, decl_uid=2408, cgraph_uid=1, symbol_order=0)
+
+int main ()
+{
+  int max;
+  int c;
+  int b;
+  int a;
+  int D.2424;
+  int _11;
+
+  <bb 2> :
+  a_2 = -10;
+  b_3 = -1;
+  c_4 = -3;
+  if (a_2 > b_3)
+    goto <bb 3>; [INV]
+  else
+    goto <bb 6>; [INV]
+
+  <bb 3> :
+  if (a_2 > c_4)
+    goto <bb 4>; [INV]
+  else
+    goto <bb 5>; [INV]
+
+  <bb 4> :
+  max_8 = a_2;
+  goto <bb 9>; [INV]
+
+  <bb 5> :
+  max_7 = c_4;
+  goto <bb 9>; [INV]
+
+  <bb 6> :
+  if (b_3 > c_4)
+    goto <bb 7>; [INV]
+  else
+    goto <bb 8>; [INV]
+
+  <bb 7> :
+  max_6 = b_3;
+  goto <bb 9>; [INV]
+
+  <bb 8> :
+  max_5 = c_4;
+
+ <bb 9> :
+  # max_1 = PHI <max_7(5), max_6(7), max_5(8), max_8(4)>
+  printf ("Max: %d\n", max_1);
+  _11 = 0;
+
+  <bb 10> :
+<L9>:
+  return _11;
+
+}
+
