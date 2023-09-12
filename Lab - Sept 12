@@ -1,0 +1,36 @@
+%{#include<stdio.h>
+int lineno;
+int kc = 0;
+int ic = 0;
+int scc = 0;
+int fc = 0;
+int ec = 0;
+%}
+%option noyywrap
+D[0-9]
+L[a-zA-Z]
+%%
+[\t]+
+if|for|do|while|static|void|else|goto|return|int|float|char|double {kc++; printf("(Token Type, Lexeme) = [Keyword: %s]\n", yytext);}
+{L}({L}|{D})* {ic++; printf("(Token Type, Lexeme) = [Identifier: %s]\n", yytext);}
+{D}+"."{D}+"e"("+"|"-")+{D}+ {ec++; printf("(Token Type, Lexeme) = [Exponential: %s]\n", yytext);}
+"/"|"<"|">"|"<="|">="|"=="|"="|":"|";"|"("|")"|"["|"]"|"{"|"}"|"+"|"-"|"*"|"!"|","|"." {scc++; printf("(Token Type, Lexeme) = [Symbol Character: %s]\n", yytext);}
+{D}+"."{D}+ {fc++; printf("(Token Type, Lexeme) = [Float: %s]\n", yytext);}
+{D}+ {ic++; printf("(Token Type, Lexeme) = [Integer: %s]\n", yytext);}
+\n {}
+%%
+int main(int argv, char *argc[]) {
+    yyin = fopen(argc[1], "r");
+    yylex();
+
+    printf("Keyword count: %d\n", kc);
+    printf("Identifier count: %d\n", ic);
+    printf("Symbol character count: %d\n", scc);
+    printf("Float count: %d\n", fc);
+    printf("Integer count: %d\n", ic);
+    printf("Exponential count: %d\n", ec);
+
+    fclose(yyin);
+
+    return 0;
+}
