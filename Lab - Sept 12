@@ -1,5 +1,6 @@
 %{#include<stdio.h>
-int lineno;
+int lc = 0;
+int wc = 0;
 int kc = 0;
 int ic = 0;
 int scc = 0;
@@ -11,17 +12,20 @@ D[0-9]
 L[a-zA-Z]
 %%
 [\t]+
-if|for|do|while|static|void|else|goto|return|int|float|char|double {kc++; printf("(Token Type, Lexeme) = [Keyword: %s]\n", yytext);}
-{L}({L}|{D})* {ic++; printf("(Token Type, Lexeme) = [Identifier: %s]\n", yytext);}
-{D}+"."{D}+"e"("+"|"-")+{D}+ {ec++; printf("(Token Type, Lexeme) = [Exponential: %s]\n", yytext);}
+if|for|do|while|static|void|else|goto|return|int|float|char|double {wc++; kc++; printf("(Token Type, Lexeme) = [Keyword: %s]\n", yytext);}
+{L}({L}|{D})* {wc++; ic++; printf("(Token Type, Lexeme) = [Identifier: %s]\n", yytext);}
+{D}+"."{D}+"e"("+"|"-")+{D}+ {wc++; ec++; printf("(Token Type, Lexeme) = [Exponential: %f]\n", atof(yytext));}
 "/"|"<"|">"|"<="|">="|"=="|"="|":"|";"|"("|")"|"["|"]"|"{"|"}"|"+"|"-"|"*"|"!"|","|"." {scc++; printf("(Token Type, Lexeme) = [Symbol Character: %s]\n", yytext);}
-{D}+"."{D}+ {fc++; printf("(Token Type, Lexeme) = [Float: %s]\n", yytext);}
-{D}+ {ic++; printf("(Token Type, Lexeme) = [Integer: %s]\n", yytext);}
-\n {}
+{D}+"."{D}+ {wc++; fc++; printf("(Token Type, Lexeme) = [Float: %s]\n", yytext);}
+{D}+ {wc++; ic++; printf("(Token Type, Lexeme) = [Integer: %s]\n", yytext);}
+\n {lc++;}
 %%
 int main(int argv, char *argc[]) {
     yyin = fopen(argc[1], "r");
     yylex();
+
+    printf("Total lines: %d\n", lc);
+    printf("Total words: %d\n", wc);
 
     printf("Keyword count: %d\n", kc);
     printf("Identifier count: %d\n", ic);
