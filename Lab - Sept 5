@@ -1,0 +1,46 @@
+Ques 2
+
+#include<stdio.h>
+int lineno;
+int vowel_cnt = 0;
+%}
+%option noyywrap
+D [0-9]
+V [a,e,i,o,u,A,E,I,O,U]
+%%
+[\t]+
+int|float|char|double|if|for|do|while|long|short|static|void|else|goto {printf("KEYWORD ");}
+"/"|"*"|"+"|"-" {printf("ARITH OP ");}
+"="|"<"|">"|"<="|">="|"=="|"!=" {printf("REL OP ");}
+{V}* {vowel_cnt = vowel_cnt + 1, printf("VOWEL SEQ: %s [COUNT = %d] ", yytext, vowel_cnt);}
+{D}* {printf("DIGIT: %s\n", yytext);}
+\n {}
+%%
+int main(int argv, char *argc[])
+{yyin = fopen(argc[1], "r"); yylex(); fclose(yyin); return 0;}
+
+Ques 3
+
+%{#include<stdio.h>
+int lineno;
+int lc = 0;
+int cc = 0;
+int wc = 0;
+%}
+%option noyywrap
+D[0-9]
+L[a-zA-Z]
+%%
+[\n] {lc++, cc += yyleng}
+[\t\n ]+ {wc++, cc += yyleng}
+%%
+int main(int argv, char *argc[])
+{
+    yyin = fopen(argc[1], "r");
+    yylex();
+    printf("Lines: %d\n", lc);
+    printf("Words: %d\n", wc);
+    printf("Char: %d\n", cc);
+    fclose(yyin);
+    return 0;
+}
